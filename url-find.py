@@ -12,27 +12,29 @@ from requests.exceptions import HTTPError
 # Ignore certificate errors
 context = ssl._create_unverified_context()
 # Set characters to be used in URL finder
-# Available Character sets in strings
+# May use available Character sets in strings or custom
 #chars = string.lowercase + string.digits + string.punctuation + string.whitespace
-chars = string.lowercase + string.digits
+chars = string.lowercase
 # Configure starting URL - include trailing slash if starting at domain name
 website = "http://ivanavilla.com/"
+# Configure min length to try
+minurl = 1
 # Configure max length to try
-maxurl = 30
+maxurl = 20
 # Configure time between attempts in seconds
 delay = 0.1
 # Configure output files
 foundurls = "urls.txt"
 non404errors = "non404.txt"
 # Uncomment print statements to debug
-for increment in range(1,maxurl):
+for increment in range(minurl,maxurl):
     #print increment
     time.sleep(delay)
     for guess in itertools.product((chars), repeat=increment):
         i = ''.join(guess)
         #print i
         try:
-            sitetry = urllib2.urlopen(website, context=context)
+            sitetry = urllib2.urlopen(website + i, context=context)
             print "\nURL found - " + website + i
             f = open(foundurls,"a+")
             f.write(website + i + "\n")
